@@ -1,3 +1,4 @@
+import "./style.css";
 // TODO 1: query preview/status/list elements
 const form = document.querySelector('#request-form');
 const status = document.querySelector('#form-status');
