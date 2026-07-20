@@ -1,11 +1,11 @@
 {
   "week": "week-02",
   "title": "Modern JavaScript Learning Dashboard",
-  "status": "draft",
-  "originalRepoUrl": "",
-  "originalCommit": "",
+  "status": "ready",
+  "originalRepoUrl": "https://github.com/Uxsx/engse203-lab02-68543210045-9",
+  "originalCommit": "55bc9257d0616dbbb2ffbc406bfae87d3143631e",
   "pullRequestUrl": "",
-  "submissionTag": "",
-  "testStatus": "not-tested",
+  "submissionTag": "lab-02-submission-v1",
+  "testStatus": "pass",
   "notes": "นำ Vite build output ที่มี index.html เข้า publish/"
 }
