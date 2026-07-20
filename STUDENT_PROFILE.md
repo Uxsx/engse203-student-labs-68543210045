@@ -3,10 +3,9 @@
 | รายการ | ข้อมูล |
 |---|---|
 | รายวิชา | ENGSE203 การเขียนโปรแกรมสำหรับวิศวกรซอฟต์แวร์ |
-| รหัสนักศึกษา | STUDENT-ID |
-| ชื่อ-นามสกุล | ชื่อ-นามสกุล |
-| Section | SEC-X |
-| GitHub Username | GITHUB-USERNAME |
-| Repository | `engse203-student-labs-STUDENT-ID` |
-
-> ไฟล์นี้จะถูกปรับข้อมูลเมื่อรัน `npm run setup`
+| รหัสนักศึกษา | 68543210045 |
+| ชื่อ-นามสกุล | สิรภพ กันทวี |
+| Section | SEC1 |
+| GitHub Username | Uxsx |
+| Repository | `engse203-student-labs-68543210045` |
+| Pages Hub | https://Uxsx.github.io/engse203-student-labs-68543210045/ |
