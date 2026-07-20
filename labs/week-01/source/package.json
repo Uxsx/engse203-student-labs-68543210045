@@ -1,0 +1,21 @@
+{
+  "name": "engse203-lab01-68543210045-9",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/hello.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Uxsx/engse203-lab01-68543210045-9.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Uxsx/engse203-lab01-68543210045-9/issues"
+  },
+  "homepage": "https://github.com/Uxsx/engse203-lab01-68543210045-9#readme"
+}
