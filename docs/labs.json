@@ -42,6 +42,21 @@
     "pageUrl": "https://Uxsx.github.io/engse203-student-labs-68543210045/labs/week-03/",
     "sourceUrl": "https://github.com/Uxsx/engse203-student-labs-68543210045/tree/lab/week-03/labs/week-03/source",
     "hasPublish": true,
-    "sourceEntries": 9
+    "sourceEntries": 8
+  },
+  {
+    "week": "week-04",
+    "title": "React Campus Service Request",
+    "status": "ready",
+    "originalRepoUrl": "https://github.com/Uxsx/engse203-lab04-68543210045-9",
+    "originalCommit": "",
+    "pullRequestUrl": "",
+    "submissionTag": "lab-04-submission-v1",
+    "testStatus": "submitted",
+    "notes": "React/Vite build output ต้องอยู่ใน publish/ ก่อนสร้าง Pages Hub",
+    "pageUrl": "https://Uxsx.github.io/engse203-student-labs-68543210045/labs/week-04/",
+    "sourceUrl": "https://github.com/Uxsx/engse203-student-labs-68543210045/tree/lab/week-04/labs/week-04/source",
+    "hasPublish": true,
+    "sourceEntries": 12
   }
 ]
