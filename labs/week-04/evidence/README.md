@@ -23,4 +23,4 @@
 | TC-09 Mobile | เลย์เอาต์เปลี่ยนจาก 2 คอลัมน์เป็น 1 คอลัมน์ หน้าจอไม่ล้น | Pass | ![alt text](image-8.png) |
 | TC-10 Keyboard | มีกรอบสีน้ำเงิน (Focus-visible) ปรากฏรอบปุ่มและฟอร์มที่กำลังกด Tab | Pass | ![alt text](image-9.png) |
 | TC-11 Build | พิมพ์คำสั่งรันผ่าน สร้างโฟลเดอร์ `dist` สำเร็จโดยไม่มีข้อความ Error | Pass | ![alt text](image-10.png) |
-| TC-12 Pages | อัปโหลดขึ้น GitHub Pages สำเร็จ หน้าเว็บเปิดติดและใช้งานได้ปกติ | Pass | `evidence/tc12.png` |
+| TC-12 Pages | อัปโหลดขึ้น GitHub Pages สำเร็จ หน้าเว็บเปิดติดและใช้งานได้ปกติ | Pass |  |
