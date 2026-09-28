@@ -1,41 +1,12 @@
 import fs from "node:fs/promises";
 import path from "node:path";
-import { execSync } from "node:child_process";
-import {
-  ROOT,
-  escapeHtml,
-  exists,
-  listLabs,
-  meaningfulEntries,
-  readJson,
-  validHttpUrl,
-} from "./common.mjs";
+import { ROOT, escapeHtml, exists, listLabs, meaningfulEntries, readJson, validHttpUrl } from "./common.mjs";
 
 const config = await readJson(path.join(ROOT, "student-config.json"));
 const labs = await listLabs();
 const docsRoot = path.join(ROOT, "docs");
 const repoUrl = `https://github.com/${config.githubUsername}/${config.repositoryName}`;
 const pagesBase = `https://${config.githubUsername}.github.io/${config.repositoryName}`;
-const repoBranch = (() => {
-  try {
-    return (
-      execSync("git rev-parse --abbrev-ref HEAD", {
-        cwd: ROOT,
-        encoding: "utf8",
-      }).trim() || "main"
-    );
-  } catch {
-    return "main";
-  }
-})();
-const labSourceUrl = (week) =>
-  week === "week-09"
-    ? `${repoUrl}/tree/${repoBranch}/labs/${week}/source`
-    : `${repoUrl}/tree/lab/${week}/labs/${week}/source`;
-const labEvidenceUrl = (week) =>
-  week === "week-09"
-    ? `${repoUrl}/tree/${repoBranch}/labs/${week}/evidence`
-    : `${repoUrl}/tree/lab/${week}/labs/${week}/evidence`;
 
 await fs.rm(docsRoot, { recursive: true, force: true });
 await fs.mkdir(path.join(docsRoot, "labs"), { recursive: true });
@@ -62,8 +33,8 @@ for (const week of labs) {
   if (hasPublish) {
     await fs.cp(publishRoot, target, { recursive: true });
   } else {
-    const sourceUrl = labSourceUrl(week);
-    const evidenceUrl = labEvidenceUrl(week);
+    const sourceUrl = `${repoUrl}/tree/lab/${week}/labs/${week}/source`;
+    const evidenceUrl = `${repoUrl}/tree/lab/${week}/labs/${week}/evidence`;
     const originalUrl = validHttpUrl(metadata.originalRepoUrl);
     const report = `<!doctype html>
 <html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -77,24 +48,13 @@ for (const week of labs) {
     await fs.writeFile(path.join(target, "index.html"), report, "utf8");
   }
 
-  const sourceUrl = labSourceUrl(week);
+  const sourceUrl = `${repoUrl}/tree/lab/${week}/labs/${week}/source`;
   const prUrl = validHttpUrl(metadata.pullRequestUrl);
   const pageUrl = `${pagesBase}/labs/${week}/`;
-  const sourceCount = (await meaningfulEntries(path.join(labRoot, "source")))
-    .length;
-  const summary = {
-    ...metadata,
-    pageUrl,
-    sourceUrl,
-    hasPublish,
-    sourceEntries: sourceCount,
-  };
+  const sourceCount = (await meaningfulEntries(path.join(labRoot, "source"))).length;
+  const summary = { ...metadata, pageUrl, sourceUrl, hasPublish, sourceEntries: sourceCount };
   summaries.push(summary);
-  await fs.writeFile(
-    path.join(target, "submission.json"),
-    `${JSON.stringify(summary, null, 2)}\n`,
-    "utf8",
-  );
+  await fs.writeFile(path.join(target, "submission.json"), `${JSON.stringify(summary, null, 2)}\n`, "utf8");
 
   cards.push(`<article class="lab-card" data-status="${escapeHtml(metadata.status)}">
     <div class="card-top"><span class="week">${escapeHtml(week)}</span><span class="status">${escapeHtml(statusLabels[metadata.status] ?? metadata.status)}</span></div>
@@ -113,11 +73,7 @@ const dashboard = `<!doctype html>
 <main><div class="notice"><strong>Instructor View:</strong> เปิดผลลัพธ์ Source, Pull Request และ submission version ของแต่ละ LAB จากการ์ดด้านล่าง</div><section class="labs">${cards.join("\n")}</section></main></body></html>`;
 
 await fs.writeFile(path.join(docsRoot, "index.html"), dashboard, "utf8");
-await fs.writeFile(
-  path.join(docsRoot, "labs.json"),
-  `${JSON.stringify(summaries, null, 2)}\n`,
-  "utf8",
-);
+await fs.writeFile(path.join(docsRoot, "labs.json"), `${JSON.stringify(summaries, null, 2)}\n`, "utf8");
 
 console.log(`Build Pages Hub: PASS — ${labs.length} LAB(s)`);
 console.log(`Output: ${path.relative(ROOT, docsRoot)}/`);
