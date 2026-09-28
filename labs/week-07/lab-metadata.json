@@ -1,0 +1,12 @@
+{
+  "week": "week-07",
+  "title": "Validation, Error Handling, CORS, Config & Front-to-Back Integration",
+  "status": "submitted",
+  "sourceOrigin": "starter",
+  "originalRepoUrl": "https://github.com/Uxsx/engse203-lab03-68543210045-9",
+  "originalCommit": "",
+  "pullRequestUrl": "",
+  "submissionTag": "lab-07-submission-v1",
+  "testStatus": "pass",
+  "notes": "จัดการ Error Handling, ตั้งค่า CORS กับ .env, ทำ API Contract, เขียน Automated Test และทำ Challenge เสร็จครบถ้วน"
+}
