@@ -1,0 +1,11 @@
+{
+  "week": "week-10",
+  "title": "Node.js Database Integration (node:sqlite)",
+  "status": "submitted",
+  "originalRepoUrl": "https://github.com/Uxsx/engse203-student-labs-68543210045",
+  "originalCommit": "86cdda6f9f5b0cec41ce413acd28e77c34697406",
+  "pullRequestUrl": "https://github.com/Uxsx/engse203-student-labs-68543210045/pull/19",
+  "submissionTag": "lab-10-submission-v1",
+  "testStatus": "pass",
+  "notes": "Week 10 เสร็จสมบูรณ์: ปรับ path ของ schema/db ให้ทำงานได้จาก API root, ใช้ SQLite จริง, SQL injection ปลอดภัย, มี API contract และ automated test; ตรวจผ่าน week-10 31/31 และ week-07 36/36"
+}
