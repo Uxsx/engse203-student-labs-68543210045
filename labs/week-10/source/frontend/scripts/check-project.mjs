@@ -520,9 +520,6 @@ await behaviour('R14', 'clearStoredRequests() ลบเฉพาะคีย์�
   assert(!storageValues.has(storageModule.STORAGE_KEY), 'ต้องลบคีย์ของ LAB05');
 }, 2);
 
-/* ------------------------------------------------------------------ */
-/* 10. รายงานผล                                                        */
-/* ------------------------------------------------------------------ */
 
 for (const result of checks) {
   if (result.skipped) {
