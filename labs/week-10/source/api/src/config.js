@@ -25,7 +25,9 @@ export const config = {
     path.join(API_ROOT, "data", "schema.sql"),
   ),
   port: Number(process.env.PORT ?? 3001),
-  corsOrigin: process.env.CORS_ORIGIN ?? "http://localhost:5173",
+  corsOrigin:
+    process.env.CORS_ORIGIN ??
+    "http://localhost:5173,http://localhost:5174,http://127.0.0.1:5173,http://127.0.0.1:5174",
   nodeEnv: process.env.NODE_ENV ?? "development",
   get isProduction() {
     return this.nodeEnv === "production";
