@@ -3,7 +3,16 @@
  * ทุกฟังก์ชันใน requestService เรียกผ่านตรงนี้
  */
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const DEV_FALLBACK = "http://localhost:3001";
+const configuredBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? "").replace(
+  /\/$/,
+  "",
+);
+const DEFAULT_BASE_URL =
+  typeof window !== "undefined" && window.location.hostname !== "localhost"
+    ? window.location.origin
+    : DEV_FALLBACK;
+const BASE_URL = configuredBaseUrl || DEFAULT_BASE_URL;
 
 /** error ที่รู้ว่ามาจาก API พร้อม status ที่ได้กลับมา */
 export class ApiError extends Error {
@@ -33,6 +42,12 @@ async function parseError(response) {
     const body = await parseJsonSafe(response);
     return body?.error ?? `คำขอไม่สำเร็จ (${response.status})`;
   } catch {
+    const htmlText = await response.clone().text();
+
+    if (htmlText.includes("<!doctype html") || htmlText.includes("<html")) {
+      return `คำขอไม่สำเร็จ (${response.status}) — API คืน HTML แทน JSON อาจเพราะ route ผิด หรือ backend ไม่เปิด`;
+    }
+
     return `คำขอไม่สำเร็จ (${response.status}) — ตรวจว่า API เปิดอยู่และตอบกลับเป็น JSON`;
   }
 }
@@ -46,14 +61,15 @@ async function parseError(response) {
 export async function apiFetch(path, options = {}) {
   let response;
   try {
-    response = await fetch(`${BASE_URL}${path}`, {
+    const requestUrl = `${BASE_URL}${path}`;
+    response = await fetch(requestUrl, {
       headers: { "Content-Type": "application/json", ...options.headers },
       ...options,
     });
   } catch {
     // fetch โยน error เมื่อต่อเซิร์ฟเวอร์ไม่ได้เลย เช่น API ไม่ได้เปิด
     throw new ApiError(
-      "ติดต่อเซิร์ฟเวอร์ไม่ได้ — ตรวจว่าเปิด API ที่พอร์ต 3001 แล้วหรือยัง",
+      "ติดต่อเซิร์ฟเวอร์ไม่ได้ — ตรวจว่าเปิด API แล้วหรือยัง และตรวจว่า VITE_API_BASE_URL ถูกต้อง",
       0,
     );
   }
