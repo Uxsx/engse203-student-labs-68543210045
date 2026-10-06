@@ -13,9 +13,14 @@
  *   validateRequestInput(input) → [] ถ้าผ่าน · ['ข้อความ error', ...] ถ้าไม่ผ่าน
  */
 
-export const REQUEST_TYPES = ['แจ้งซ่อม', 'บริการบัญชีผู้ใช้', 'ขอใช้อุปกรณ์', 'อื่น ๆ'];
-export const PRIORITIES = ['normal', 'urgent'];
-export const STATUSES = ['pending', 'in-progress', 'completed'];
+export const REQUEST_TYPES = [
+  "แจ้งซ่อม",
+  "บริการบัญชีผู้ใช้",
+  "ขอใช้อุปกรณ์",
+  "อื่น ๆ",
+];
+export const PRIORITIES = ["normal", "urgent"];
+export const STATUSES = ["pending", "in-progress", "completed"];
 
 export const MIN_NAME = 2;
 export const MIN_DETAILS = 10;
@@ -25,44 +30,42 @@ export const MAX_LOCATION = 100;
 export const MAX_DETAILS = 1000;
 
 function readText(value) {
-  return typeof value === 'string' ? value.trim() : '';
+  return typeof value === "string" ? value.trim() : "";
 }
 
 function checkText(value, label, { min = 1, max }) {
-  if (typeof value !== 'string') return `${label}ต้องเป็นข้อความ`;
+  if (typeof value !== "string") return `${label}ต้องเป็นข้อความ`;
   const length = value.trim().length;
-  if (length < min) return min > 1 ? `${label}ต้องมีอย่างน้อย ${min} ตัวอักษร` : `กรุณาระบุ${label}`;
+  if (length < min)
+    return min > 1
+      ? `${label}ต้องมีอย่างน้อย ${min} ตัวอักษร`
+      : `กรุณาระบุ${label}`;
   if (length > max) return `${label}ต้องไม่เกิน ${max} ตัวอักษร`;
   return null;
 }
 
 export function validateRequestInput(input) {
-  if (!input || typeof input !== 'object' || Array.isArray(input)) {
-    return ['ต้องส่งข้อมูลคำร้องมาด้วย'];
+  if (!input || typeof input !== "object" || Array.isArray(input)) {
+    return ["ต้องส่งข้อมูลคำร้องมาด้วย"];
   }
 
-  const errors = [checkText(input.requesterName, 'ชื่อผู้แจ้ง', { min: MIN_NAME, max: MAX_NAME }),
-    REQUEST_TYPES.includes(input.requestType) ? null : 'ประเภทคำร้องไม่ถูกต้อง',
-    checkText(input.location, 'สถานที่', { max: MAX_LOCATION }),
-    checkText(input.details, 'รายละเอียด', { min: MIN_DETAILS, max: MAX_DETAILS }),
-    PRIORITIES.includes(input.priority) ? null : 'ความเร่งด่วนต้องเป็น normal หรือ urgent',
-  ];
-  if (readText(input.requesterName).length < MIN_NAME) {
-    errors.push(`ชื่อผู้แจ้งต้องมีอย่างน้อย ${MIN_NAME} ตัวอักษร`);
-  }
-  if (!REQUEST_TYPES.includes(input.requestType)) {
-    errors.push('ประเภทคำร้องไม่ถูกต้อง');
-  }
-  if (!readText(input.location)) {
-    errors.push('กรุณาระบุสถานที่');
-  }
-  if (readText(input.details).length < MIN_DETAILS) {
-    errors.push(`รายละเอียดต้องมีอย่างน้อย ${MIN_DETAILS} ตัวอักษร`);
-  }
-  if (!PRIORITIES.includes(input.priority)) {
-    errors.push('ความเร่งด่วนต้องเป็น normal หรือ urgent');
-  }
-  return errors.filter(Boolean);
+  const errors = [
+    checkText(input.requesterName, "ชื่อผู้แจ้ง", {
+      min: MIN_NAME,
+      max: MAX_NAME,
+    }),
+    REQUEST_TYPES.includes(input.requestType) ? null : "ประเภทคำร้องไม่ถูกต้อง",
+    checkText(input.location, "สถานที่", { max: MAX_LOCATION }),
+    checkText(input.details, "รายละเอียด", {
+      min: MIN_DETAILS,
+      max: MAX_DETAILS,
+    }),
+    PRIORITIES.includes(input.priority)
+      ? null
+      : "ความเร่งด่วนต้องเป็น normal หรือ urgent",
+  ].filter(Boolean);
+
+  return errors;
 }
 
 /** สถานะที่ PUT /api/requests/:id รับได้ */
@@ -72,13 +75,21 @@ export function isValidStatus(status) {
 
 /** Week 13 — ข้อมูลเข้าสู่ระบบ ตรวจแค่รูปแบบ ส่วนถูกหรือผิดให้ authService ตัดสิน (ให้มาแล้ว) */
 export function validateLoginInput(input) {
-  if (!input || typeof input !== 'object') return ['ต้องส่งอีเมลและรหัสผ่าน'];
+  if (!input || typeof input !== "object") return ["ต้องส่งอีเมลและรหัสผ่าน"];
   const errors = [];
-  if (typeof input.email !== 'string' || !input.email.includes('@') || input.email.length > 254) {
-    errors.push('รูปแบบอีเมลไม่ถูกต้อง');
+  if (
+    typeof input.email !== "string" ||
+    !input.email.includes("@") ||
+    input.email.length > 254
+  ) {
+    errors.push("รูปแบบอีเมลไม่ถูกต้อง");
   }
-  if (typeof input.password !== 'string' || input.password.length === 0 || input.password.length > 200) {
-    errors.push('กรุณาระบุรหัสผ่าน');
+  if (
+    typeof input.password !== "string" ||
+    input.password.length === 0 ||
+    input.password.length > 200
+  ) {
+    errors.push("กรุณาระบุรหัสผ่าน");
   }
   return errors;
 }
