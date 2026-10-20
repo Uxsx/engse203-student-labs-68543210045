@@ -17,7 +17,7 @@
 | CP38 | error + logging | [เปิด](https://se-rmutl.github.io/engse203/week11/guides/ENGSE203_Week11_CP38_LiveCoding.html) |
 | CP39 | production build | [เปิด](https://se-rmutl.github.io/engse203/week11/guides/ENGSE203_Week11_CP39_LiveCoding.html) |
 
-> ไฟล์ต้นฉบับอยู่ใน  ของ LAB นี้ · เปิดออฟไลน์ได้
+> ไฟล์ต้นฉบับอยู่ใน [โฟลเดอร์ guides](../guides/) ของ LAB นี้ · เปิดออฟไลน์ได้
 
 ---
 
@@ -77,7 +77,8 @@ cp -r labs/week-10/source labs/week-11/source
 cd labs/week-11/source
 ```
 
-> ถ้างาน Week 10 ไม่สมบูรณ์ ใช้ `lab11/starter/` จาก Course Repository แทน (ขอไฟล์สำรองจากผู้สอนได้)
+> ถ้าโฟลเดอร์ `labs/week-11/source/` มีอยู่แล้ว ให้ใช้ต่อได้เลยและอย่าคัดลอกทับ
+> ถ้ายังไม่มี ให้คัดลอก Week 10 มาก่อน; หากไม่มี Week 10 ที่สมบูรณ์ ขอ snapshot จากผู้สอน
 
 ## ① เตรียมฐานข้อมูล
 

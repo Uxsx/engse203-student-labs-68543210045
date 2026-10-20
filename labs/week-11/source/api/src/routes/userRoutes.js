@@ -1,15 +1,12 @@
 import { Router } from 'express';
 import { DatabaseSync } from 'node:sqlite';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { config } from '../config.js';
 
 // ⭐ Challenge — endpoint สำหรับดูผู้ใช้และคำร้องของแต่ละคน
-const HERE = path.dirname(fileURLToPath(import.meta.url));
-const DB_FILE = process.env.DB_FILE ?? path.join(HERE, '../../data/campus.db');
 const router = Router();
 
 function db() {
-  const d = new DatabaseSync(DB_FILE);
+  const d = new DatabaseSync(config.dbFile);
   d.exec('PRAGMA foreign_keys = ON');
   return d;
 }

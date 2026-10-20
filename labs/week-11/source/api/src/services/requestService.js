@@ -2,6 +2,10 @@ import { DatabaseSync } from 'node:sqlite';
 import { readFileSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { config } from '../config.js';
+
+const HERE = path.dirname(fileURLToPath(import.meta.url));
+const SCHEMA_FILE = path.resolve(HERE, '../../data/schema.sql');
 
 /**
  * Week 10 — เปลี่ยนจากอ่านไฟล์ JSON เป็นฐานข้อมูล SQLite
@@ -10,13 +14,6 @@ import { fileURLToPath } from 'node:url';
  *   → controller ไม่ต้องแก้เลย · frontend ไม่ต้องแก้เลย
  *   นี่คือครั้งที่ 4 ที่เราเปลี่ยนแหล่งข้อมูลโดยแก้แค่ชั้นเดียว
  */
-
-// ⚠ path ต้องอ้างจากตำแหน่งไฟล์นี้ ไม่ใช่จากที่ที่รันคำสั่ง
-//   ไม่งั้น `npm run dev` (รันจาก api/) กับ checker (รันจาก root) จะหาไฟล์คนละที่
-const HERE = path.dirname(fileURLToPath(import.meta.url));
-const API_ROOT = path.resolve(HERE, '../..');
-const DB_FILE =  process.env.DB_FILE ?? path.join(API_ROOT, 'data', 'campus.db');
-const SCHEMA_FILE = path.join(API_ROOT, 'data', 'schema.sql');
 
 let db;
 
@@ -37,7 +34,7 @@ const SELECT_SHAPE = `
   JOIN users u ON u.id = r.requester_id`;
 
 export async function loadSeed() {
-  db = new DatabaseSync(DB_FILE);
+  db = new DatabaseSync(config.dbFile);
   db.exec('PRAGMA foreign_keys = ON');   // ⚠ ต้องเปิดทุกครั้งที่เปิดฐานข้อมูล
   // ถ้ายังไม่มีตาราง (ไฟล์ฐานข้อมูลใหม่) ให้สร้างจาก schema.sql
   const ready = db.prepare(
@@ -49,11 +46,6 @@ export async function loadSeed() {
 }
 
 
-/**
- * TODO W11-DBSTATUS (CP37) · คืนสถานะฐานข้อมูลให้ health check
- *   - ถ้ายังไม่เปิด db → { connected: false }
- *   - ถ้าเปิดได้ → { connected: true, driver: 'sqlite', tables: N }
- */
 /** สถานะฐานข้อมูล — ใช้โดย health check */
 export function getDbStatus() {
   try {

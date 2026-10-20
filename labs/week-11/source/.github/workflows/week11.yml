@@ -1,0 +1,25 @@
+name: Week 11 CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: |
+            api/package-lock.json
+            frontend/package-lock.json
+      - run: npm ci --prefix api
+      - run: npm ci --prefix frontend
+      - run: npm run build --prefix frontend
+      - run: npm test --prefix api
+        env:
+          DB_FILE: ${{ runner.temp }}/week11-api-tests.db
+      - run: node --disable-warning=ExperimentalWarning check-week11.mjs

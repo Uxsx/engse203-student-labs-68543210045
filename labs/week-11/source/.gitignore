@@ -6,6 +6,10 @@ node_modules/
 .env.local
 *.local
 
+# Commit safe templates and the public production frontend setting.
+!**/.env.example
+!frontend/.env.production
+
 # build output — สร้างใหม่ได้ทุกครั้ง
 frontend/dist/
 
