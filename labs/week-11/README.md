@@ -76,24 +76,29 @@ hardcode ค่าได้              config จาก env
 
 ## เริ่มทำ LAB
 
-> **ทำงานใน Student Repository ที่ `labs/week-11/source/`** (เหมือนสัปดาห์ 7–10) — ตั้งต้นด้วย `cp -r labs/week-10/source labs/week-11/source`
-> ถ้างานสัปดาห์ 10 ไม่สมบูรณ์ ใช้ `lab11/starter/` ด้านล่างแทน
+> **ทำงานใน `labs/week-11/source/`** ถ้ามีโฟลเดอร์นี้อยู่แล้วให้ใช้ต่อได้เลย
+> หากยังไม่มี ให้คัดลอกงานสัปดาห์ 10 มาเป็นจุดเริ่มต้น; ถ้างานไม่สมบูรณ์ให้ขอ snapshot จากผู้สอน
+> (ใน Student Repository นี้ไม่มีโฟลเดอร์ `lab11/starter/`)
 
 ```bash
-cd lab11/starter/api
+cd labs/week-11/source/api
 npm install
 cp .env.example .env
 npm run db:setup
 npm run dev
 
 # frontend (อีก terminal)
-cd lab11/starter/frontend && npm install && npm run dev
+cd labs/week-11/source/frontend
+npm install
+cp .env.example .env.local
+npm run dev
 ```
 
 ```bash
-# ตรวจงาน — รันจาก lab11/starter/
+# ตรวจงาน — รันจาก labs/week-11/source/
+cd labs/week-11/source
 node --disable-warning=ExperimentalWarning check-week11.mjs --inclass   # 17/17
-node --disable-warning=ExperimentalWarning check-week11.mjs            # 37/41
+node --disable-warning=ExperimentalWarning check-week11.mjs            # 41/41
 node --disable-warning=ExperimentalWarning check-week10.mjs            # 31/31
 node --disable-warning=ExperimentalWarning check-week07.mjs            # 36/36
 ```
@@ -101,8 +106,9 @@ node --disable-warning=ExperimentalWarning check-week07.mjs            # 36/36
 ## production build
 
 ```bash
-cd frontend && npm run build
-cd ../api && NODE_ENV=production npm start
+cd labs/week-11/source
+npm run build
+NODE_ENV=production npm start
 # เปิด http://localhost:3001 ได้ทั้งเว็บและ API
 ```
 
@@ -129,12 +135,10 @@ git tag lab-11-submission-v1
 
 ```
 week-11-fullstack-integration/
-├── lab11/
-│   ├── LAB11_INCLASS_GUIDE_TH.md
-│   ├── LAB11_TAKEHOME_GUIDE_TH.md
-│   └── starter/  (config/health/build เป็น TODO)
+├── README.md
+├── lab11/  (คู่มือ In-Class และ Take-Home)
 ├── guides/  (เอกสาร · สไลด์ · live-coding CP35–39)
-└── _instructor-private/  ⚠ สำหรับผู้สอน
+└── source/  (โปรเจกต์ที่ทำงานและ checker)
 ```
 
 > **MongoDB เป็นภาคผนวก** — สัปดาห์นี้เน้น integration + production-ready ด้วย SQLite (จากสัปดาห์ 10) · MongoDB/async อยู่ในบท 8 "อ่านเพิ่มเติม" เพื่อให้รู้จักทางเลือก ไม่ต้องลงมือเขียน
@@ -143,9 +147,4 @@ week-11-fullstack-integration/
 
 ## สำหรับผู้สอน
 
-| ไฟล์ | ใช้ทำอะไร |
-|---|---|
-| [Step Script](_instructor-private/ENGSE203_Week11_Instructor_Step_Script_TH.md) | สคริปต์ 300 นาที |
-| `_instructor-private/reference-solution/` | เฉลย (checker 41/41) |
-
-⚠ **`_instructor-private/` ห้ามเผยแพร่ให้นักศึกษา**
+เอกสารและเฉลยสำหรับผู้สอนไม่รวมอยู่ใน Student Repository นี้

@@ -36,18 +36,6 @@ export function createApp() {
   app.use('/api/requests', requestRoutes);
   app.use('/api/users', userRoutes);
 
-  /**
-   * 🏫 TODO W11-STATIC (CP39) · ทำให้ production เปิด URL เดียวได้ทั้งเว็บและ API
-   *
-   *   ① ตอน production (config.isProd) ให้เสิร์ฟไฟล์ใน config.staticDir (frontend/dist)
-   *      app.use(express.static(config.staticDir))
-   *   ② ทุก path ที่ไม่ขึ้นต้นด้วย /api → คืน index.html (React Router จัดการต่อ)
-   *      ใช้ regex ที่จับ "ทุก path ยกเว้นที่ขึ้นต้นด้วย /api" (ดูเอกสารบทที่ 6)
-   *   ③ ⚠ route app.get('/') ด้านบนจะ "ชิง" หน้าแรกไปตอบเป็น JSON
-   *      → ย้ายข้อความต้อนรับไปไว้ที่ /api และให้ '/' ตอบ JSON เฉพาะตอน dev
-   *      (ไม่งั้นผู้ใช้เปิด URL บน cloud แล้วจะเห็น JSON แทนหน้าเว็บ)
-   */
-
   // ⑥ ปิดท้าย
   app.use(notFound);
   app.use(errorHandler);

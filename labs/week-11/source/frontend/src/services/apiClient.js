@@ -3,15 +3,16 @@
  * ทุกฟังก์ชันใน requestService เรียกผ่านตรงนี้
  */
 
-const DEV_FALLBACK = "http://localhost:3001";
 const configuredBaseUrl = (import.meta.env.VITE_API_BASE_URL ?? "").replace(
   /\/$/,
   "",
 );
 const DEFAULT_BASE_URL =
-  typeof window !== "undefined" && window.location.hostname !== "localhost"
-    ? window.location.origin
-    : DEV_FALLBACK;
+  import.meta.env.DEV
+    ? "http://localhost:3001"
+    : typeof window !== "undefined"
+      ? window.location.origin
+      : "";
 const BASE_URL = configuredBaseUrl || DEFAULT_BASE_URL;
 
 /** error ที่รู้ว่ามาจาก API พร้อม status ที่ได้กลับมา */
