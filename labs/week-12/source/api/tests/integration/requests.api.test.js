@@ -113,6 +113,26 @@ describe('POST /api/requests', () => {
   });
 });
 
+describe('POST /api/requests/reset', () => {
+  test('คืนข้อมูลตัวอย่างเริ่มต้นหลังมีการเปลี่ยนแปลงข้อมูล', async () => {
+    await request(app).delete('/api/requests/REQ-002').expect(204);
+    await request(app).post('/api/requests').send(valid).expect(201);
+    await request(app).put('/api/requests/REQ-001').send({ status: 'completed' }).expect(200);
+
+    const reset = await request(app).post('/api/requests/reset');
+    expect(reset.status).toBe(200);
+    expect(reset.body).toHaveLength(5);
+    expect(reset.body.map((item) => item.id)).toEqual([
+      'REQ-001', 'REQ-002', 'REQ-003', 'REQ-004', 'REQ-005',
+    ]);
+    expect(reset.body.find((item) => item.id === 'REQ-001').status).toBe('pending');
+    expect(reset.body.find((item) => item.id === 'REQ-002').status).toBe('in-progress');
+
+    const requests = await request(app).get('/api/requests');
+    expect(requests.body).toEqual(reset.body);
+  });
+});
+
 describe('PUT /api/requests/:id', () => {
   test('เปลี่ยนสถานะ → 200 และค่าใหม่ถูกบันทึก', async () => {
     const r = await request(app).put('/api/requests/REQ-001').send({ status: 'completed' });

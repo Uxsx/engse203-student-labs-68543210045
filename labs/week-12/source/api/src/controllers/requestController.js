@@ -21,6 +21,10 @@ export function createRequest(req, res) {
   res.status(201).json(created);
 }
 
+export function resetDemoData(req, res) {
+  res.status(200).json(service.resetDemoData());
+}
+
 export function updateRequestStatus(req, res) {
   const { status } = req.body ?? {};
   if (!isValidStatus(status)) {

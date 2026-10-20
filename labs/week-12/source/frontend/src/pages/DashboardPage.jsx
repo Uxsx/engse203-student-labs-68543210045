@@ -66,7 +66,10 @@ function DashboardPage() {
     if (!window.confirm('ต้องการคืนข้อมูลตัวอย่างเริ่มต้นหรือไม่?')) return;
     try {
       setRequests(await resetRequests());
+      setLoadState('success');
+      setErrorMessage('');
       setStatusFilter('all');
+      if (scenario) setSearchParams({});
       setNotice('คืนข้อมูลตัวอย่างเริ่มต้นแล้ว');
     } catch (error) {
       setNotice(error instanceof Error ? error.message : 'คืนข้อมูลไม่สำเร็จ');

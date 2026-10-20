@@ -136,6 +136,18 @@ export function create(input) {
   return findById(id);
 }
 
+export function resetDemoData() {
+  db.exec('BEGIN');
+  try {
+    db.exec(readFileSync(SCHEMA_FILE, 'utf8'));
+    db.exec('COMMIT');
+  } catch (err) {
+    db.exec('ROLLBACK');
+    throw err;
+  }
+  return findAll();
+}
+
 export function updateStatus(id, status) {
   const result = db.prepare('UPDATE requests SET status = ? WHERE id = ?').run(status, id);
   return result.changes ? findById(id) : null;
