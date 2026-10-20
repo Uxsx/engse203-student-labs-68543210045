@@ -33,7 +33,8 @@ for (const week of labs) {
   if (hasPublish) {
     await fs.cp(publishRoot, target, { recursive: true });
   } else {
-    const sourceUrl = `${repoUrl}/tree/lab/${week}/labs/${week}/source`;
+    const sourceUrl = validHttpUrl(metadata.sourceUrl) || `${repoUrl}/tree/lab/${week}/labs/${week}/source`;
+    const resultUrl = validHttpUrl(metadata.resultUrl);
     const evidenceUrl = `${repoUrl}/tree/lab/${week}/labs/${week}/evidence`;
     const originalUrl = validHttpUrl(metadata.originalRepoUrl);
     const report = `<!doctype html>
@@ -43,12 +44,13 @@ for (const week of labs) {
 <body><main><p><a href="../../index.html">← LAB Portfolio</a></p><span class="pill">${escapeHtml(statusLabels[metadata.status] ?? metadata.status)}</span>
 <h1>${escapeHtml(week)} — ${escapeHtml(metadata.title)}</h1><p>LAB นี้ใช้ evidence report แทน web application หรือยังไม่ได้นำ build output เข้า publish/</p>
 <div class="grid"><div class="card"><strong>Test Status</strong><p>${escapeHtml(metadata.testStatus)}</p></div><div class="card"><strong>Submission</strong><p>${escapeHtml(metadata.submissionTag || "ยังไม่ระบุ")}</p></div><div class="card"><strong>Original Commit</strong><p>${escapeHtml(metadata.originalCommit || "ยังไม่ระบุ")}</p></div></div>
-<div class="actions"><a href="${escapeHtml(sourceUrl)}">View Source</a><a href="${escapeHtml(evidenceUrl)}">View Evidence</a>${originalUrl ? `<a href="${escapeHtml(originalUrl)}">Original Repository</a>` : ""}</div>
+<div class="actions">${resultUrl ? `<a href="${escapeHtml(resultUrl)}" target="_blank" rel="noopener noreferrer">View Result</a>` : ""}<a href="${escapeHtml(sourceUrl)}">View Source</a><a href="${escapeHtml(evidenceUrl)}">View Evidence</a>${originalUrl ? `<a href="${escapeHtml(originalUrl)}">Original Repository</a>` : ""}</div>
 <p style="margin-top:22px;color:#52677c">${escapeHtml(metadata.notes || "")}</p></main></body></html>`;
     await fs.writeFile(path.join(target, "index.html"), report, "utf8");
   }
 
-  const sourceUrl = `${repoUrl}/tree/lab/${week}/labs/${week}/source`;
+  const sourceUrl = validHttpUrl(metadata.sourceUrl) || `${repoUrl}/tree/lab/${week}/labs/${week}/source`;
+  const resultUrl = validHttpUrl(metadata.resultUrl);
   const prUrl = validHttpUrl(metadata.pullRequestUrl);
   const pageUrl = `${pagesBase}/labs/${week}/`;
   const sourceCount = (await meaningfulEntries(path.join(labRoot, "source"))).length;
@@ -60,7 +62,7 @@ for (const week of labs) {
     <div class="card-top"><span class="week">${escapeHtml(week)}</span><span class="status">${escapeHtml(statusLabels[metadata.status] ?? metadata.status)}</span></div>
     <h2>${escapeHtml(metadata.title)}</h2>
     <p>Test: <strong>${escapeHtml(metadata.testStatus)}</strong> • ${hasPublish ? "Web output" : "Evidence report"}</p>
-    <div class="links"><a class="primary" href="labs/${escapeHtml(week)}/">View Result</a><a href="${escapeHtml(sourceUrl)}">Source</a>${prUrl ? `<a href="${escapeHtml(prUrl)}">Pull Request</a>` : ""}</div>
+    <div class="links">${resultUrl ? `<a class="primary" href="${escapeHtml(resultUrl)}" target="_blank" rel="noopener noreferrer">View Result</a>` : `<a class="primary" href="labs/${escapeHtml(week)}/">View Result</a>`}<a href="${escapeHtml(sourceUrl)}">Source</a>${prUrl ? `<a href="${escapeHtml(prUrl)}">Pull Request</a>` : ""}</div>
     <small>Version: ${escapeHtml(metadata.submissionTag || "not submitted")}</small>
   </article>`);
 }
