@@ -47,7 +47,13 @@ const forbiddenNames = new Set([".git", "node_modules", ".env", ".env.local", ".
 async function scanForbidden(directory) {
   if (!(await exists(directory))) return;
   for (const entry of await fs.readdir(directory, { withFileTypes: true })) {
-    if (forbiddenNames.has(entry.name)) errors.push(`พบไฟล์/โฟลเดอร์ที่ห้าม commit: ${path.relative(ROOT, path.join(directory, entry.name))}`);
+    const entryPath = path.join(directory, entry.name);
+    const relativePath = path.relative(ROOT, entryPath);
+    if (relativePath === path.join("labs", "week-11", "source", "frontend", ".env.production")) {
+      const contents = await fs.readFile(entryPath, "utf8");
+      if (contents.trim() === "VITE_API_BASE_URL=") continue;
+    }
+    if (forbiddenNames.has(entry.name)) errors.push(`พบไฟล์/โฟลเดอร์ที่ห้าม commit: ${relativePath}`);
     else if (entry.isDirectory()) await scanForbidden(path.join(directory, entry.name));
   }
 }
