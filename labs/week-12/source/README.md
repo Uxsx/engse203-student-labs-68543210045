@@ -76,7 +76,7 @@ curl http://localhost:3001/api/health
 
 ## API Endpoints
 
-ดู `API_CONTRACT.md` สำหรับรายละเอียดครบ · สรุป: `GET/POST/PUT/DELETE /api/requests` · `GET /api/health`
+ดู `API_CONTRACT.md` สำหรับรายละเอียดครบ · สรุป: `GET/POST/PUT/DELETE /api/requests` · `POST /api/requests/reset` คืนข้อมูลตัวอย่างเริ่มต้น · `GET /api/health`
 
 ## การตัดสินใจด้านการออกแบบ
 

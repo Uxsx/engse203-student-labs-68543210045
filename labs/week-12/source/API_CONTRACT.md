@@ -31,6 +31,7 @@
 |---|---|---|---|---|---|
 | `GET` | `/api/requests` | ดูคำร้องทั้งหมด | — | `200` + array | — |
 | `GET` | `/api/requests?status=` | กรองตามสถานะ | — | `200` + array | — |
+| `POST` | `/api/requests/reset` | คืนฐานข้อมูลเป็นข้อมูลตัวอย่างเริ่มต้น | — | `200` + array | `500` รีเซ็ตไม่สำเร็จ |
 | `GET` | `/api/requests/:id` | ดูคำร้องใบเดียว | — | `200` + object | `404` ไม่พบ |
 | `POST` | `/api/requests` | สร้างคำร้องใหม่ | Request (ไม่ต้องมี `id`, `status`) | `201` + object ที่สร้าง | `400` ข้อมูลไม่ถูกต้อง |
 | `PUT` | `/api/requests/:id` | เปลี่ยนสถานะ | `{ "status": "..." }` | `200` + object ที่แก้แล้ว | `400` สถานะผิด · `404` ไม่พบ |
@@ -101,6 +102,15 @@ Content-Type: application/json
   ]
 }
 ```
+
+### POST /api/requests/reset
+
+```http
+POST /api/requests/reset HTTP/1.1
+Host: localhost:3001
+```
+
+**200 OK** — คืนรายการคำร้องตัวอย่างเริ่มต้น 5 รายการ และล้างข้อมูลคำร้อง/ผู้ใช้ที่เพิ่มเข้ามาหลังจากนั้น
 
 ### PUT /api/requests/:id
 
