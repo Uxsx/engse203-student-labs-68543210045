@@ -1,8 +1,6 @@
 /**
  * password.js — เก็บรหัสผ่านอย่างปลอดภัยด้วย scrypt (มากับ Node ใน node:crypto)
  *
- * 🏫 TODO W13-HASH (CP49) — ทำให้ tests/unit/password.test.js ผ่านทุกข้อ
- *
  *   รูปแบบที่ต้องเก็บ:  scrypt$<salt>$<hash>
  *     salt = randomBytes(16) แปลงเป็น hex  (32 ตัวอักษร)
  *     hash = scryptSync(รหัสผ่าน, salt, 64) แปลงเป็น hex  (128 ตัวอักษร)

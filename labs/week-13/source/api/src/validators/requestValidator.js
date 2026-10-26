@@ -1,11 +1,6 @@
 /**
  * requestValidator.js — กฎตรวจข้อมูลคำร้อง เป็น "pure function"
  *
- * 🏫 TODO W13-VALID (CP48) — ทำให้เข้มขึ้น
- *   ① ชนิดข้อมูล: requesterName · location · details ต้องเป็น string ไม่งั้นบอกว่า "...ต้องเป็นข้อความ"
- *   ② ความยาวสูงสุด: ชื่อ ≤ 100 · สถานที่ ≤ 100 · รายละเอียด ≤ 1000 ตัวอักษร
- *   ③ เขียน unit test ค่าขอบของค่าสูงสุดด้วย (100 ผ่าน · 101 ไม่ผ่าน)
- *
  * Week 12 · CP45 — ทำไมต้องแยกออกจาก middleware
  *   middleware ผูกกับ req / res / next → จะทดสอบต้องเปิด server หรือจำลอง req/res
  *   pure function รับข้อมูลเข้า คืนผลลัพธ์ ไม่แตะอะไรภายนอก → เขียน unit test ได้ทันที
@@ -23,10 +18,6 @@ export const MIN_DETAILS = 10;
 export const MAX_NAME = 100;
 export const MAX_LOCATION = 100;
 export const MAX_DETAILS = 1000;
-
-function readText(value) {
-  return typeof value === 'string' ? value.trim() : '';
-}
 
 function checkText(value, label, { min = 1, max }) {
   if (typeof value !== 'string') return `${label}ต้องเป็นข้อความ`;
@@ -47,21 +38,6 @@ export function validateRequestInput(input) {
     checkText(input.details, 'รายละเอียด', { min: MIN_DETAILS, max: MAX_DETAILS }),
     PRIORITIES.includes(input.priority) ? null : 'ความเร่งด่วนต้องเป็น normal หรือ urgent',
   ];
-  if (readText(input.requesterName).length < MIN_NAME) {
-    errors.push(`ชื่อผู้แจ้งต้องมีอย่างน้อย ${MIN_NAME} ตัวอักษร`);
-  }
-  if (!REQUEST_TYPES.includes(input.requestType)) {
-    errors.push('ประเภทคำร้องไม่ถูกต้อง');
-  }
-  if (!readText(input.location)) {
-    errors.push('กรุณาระบุสถานที่');
-  }
-  if (readText(input.details).length < MIN_DETAILS) {
-    errors.push(`รายละเอียดต้องมีอย่างน้อย ${MIN_DETAILS} ตัวอักษร`);
-  }
-  if (!PRIORITIES.includes(input.priority)) {
-    errors.push('ความเร่งด่วนต้องเป็น normal หรือ urgent');
-  }
   return errors.filter(Boolean);
 }
 

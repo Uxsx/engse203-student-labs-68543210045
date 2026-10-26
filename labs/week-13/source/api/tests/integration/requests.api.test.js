@@ -2,6 +2,7 @@ import { describe, test, expect, beforeEach } from 'vitest';
 import request from 'supertest';
 import { createApp } from '../../src/app.js';
 import { loadSeed } from '../../src/services/requestService.js';
+import { loginAsStaff } from '../helpers/auth.js';
 
 /**
  * Integration test — ยิง HTTP จริงผ่านทุกชั้น: route → controller → service → SQLite
@@ -11,6 +12,8 @@ import { loadSeed } from '../../src/services/requestService.js';
 
 const app = createApp();
 beforeEach(async () => { await loadSeed(); });
+
+const staffAuth = async () => ({ Authorization: `Bearer ${await loginAsStaff(app)}` });
 
 const valid = {
   requesterName: 'ทดสอบ อัตโนมัติ', requestType: 'แจ้งซ่อม',
@@ -66,7 +69,7 @@ describe('POST /api/requests', () => {
   });
   // 🐞 regression test — BUG #1: ลบแล้วเพิ่มใหม่ ได้ 500 (รหัสซ้ำ)
   test('ลบรายการกลาง แล้วเพิ่มใหม่ → 201 และรหัสไม่ซ้ำของเดิม', async () => {
-    await request(app).delete('/api/requests/REQ-002').expect(204);
+    await request(app).delete('/api/requests/REQ-002').set(await staffAuth()).expect(204);
     const r = await request(app).post('/api/requests').send(valid);
     expect(r.status).toBe(201);
     const ids = (await request(app).get('/api/requests')).body.map((x) => x.id);
@@ -76,28 +79,31 @@ describe('POST /api/requests', () => {
 
 describe('PUT /api/requests/:id', () => {
   test('เปลี่ยนสถานะ → 200 และค่าใหม่ถูกบันทึก', async () => {
-    const r = await request(app).put('/api/requests/REQ-001').send({ status: 'completed' });
+    const r = await request(app).put('/api/requests/REQ-001')
+      .set(await staffAuth()).send({ status: 'completed' });
     expect(r.status).toBe(200);
     expect(r.body.status).toBe('completed');
   });
   test('สถานะนอกรายการ → 400', async () => {
-    const r = await request(app).put('/api/requests/REQ-001').send({ status: 'done' });
+    const r = await request(app).put('/api/requests/REQ-001')
+      .set(await staffAuth()).send({ status: 'done' });
     expect(r.status).toBe(400);
   });
   // 🐞 regression test — BUG #3: เปลี่ยนสถานะคำร้องที่ไม่มีอยู่ ได้ 500
   test('คำร้องที่ไม่มีอยู่ → 404 (ไม่ใช่ 500)', async () => {
-    const r = await request(app).put('/api/requests/REQ-999').send({ status: 'completed' });
+    const r = await request(app).put('/api/requests/REQ-999')
+      .set(await staffAuth()).send({ status: 'completed' });
     expect(r.status).toBe(404);
   });
 });
 
 describe('DELETE /api/requests/:id', () => {
   test('ลบแล้ว GET ซ้ำ → 404', async () => {
-    await request(app).delete('/api/requests/REQ-003').expect(204);
+    await request(app).delete('/api/requests/REQ-003').set(await staffAuth()).expect(204);
     await request(app).get('/api/requests/REQ-003').expect(404);
   });
   test('ลบรายการที่ไม่มี → 404', async () => {
-    await request(app).delete('/api/requests/REQ-999').expect(404);
+    await request(app).delete('/api/requests/REQ-999').set(await staffAuth()).expect(404);
   });
 });
 
