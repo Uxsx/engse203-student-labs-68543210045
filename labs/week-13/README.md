@@ -77,7 +77,9 @@ curl http://localhost:3001/api/health
 
 ## API Endpoints
 
-ดู `API_CONTRACT.md` สำหรับรายละเอียดครบ · สรุป: `GET/POST/PUT/DELETE /api/requests` · `GET /api/health`
+ดู `API_CONTRACT.md` สำหรับรายละเอียดครบ · สรุป: `POST /api/auth/login`, `GET/POST/PUT/DELETE /api/requests` · `GET /api/health`
+
+หลังเข้าสู่ระบบ เจ้าหน้าที่ส่ง token ใน header `Authorization: Bearer <token>` สำหรับ `PUT` และ `DELETE` คำร้อง; `GET` และ `POST` ยังเปิดให้ใช้งานโดยไม่ต้องเข้าสู่ระบบ
 
 ## การตัดสินใจด้านการออกแบบ
 

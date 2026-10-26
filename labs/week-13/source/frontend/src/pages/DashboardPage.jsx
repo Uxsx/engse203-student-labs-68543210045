@@ -5,12 +5,14 @@ import FilterBar from '../components/FilterBar.jsx';
 import LoadingState from '../components/LoadingState.jsx';
 import RequestList from '../components/RequestList.jsx';
 import SummaryPanel from '../components/SummaryPanel.jsx';
+import { useAuth } from '../context/AuthContext.jsx';
 import useManualReload from '../hooks/useManualReload.js';
-import { deleteRequest, getRequests, resetRequests } from '../services/requestService.js';
+import { ApiError, deleteRequest, getRequests, resetRequests, updateRequestStatus } from '../services/requestService.js';
 import { summarizeRequests } from '../utils/requestSummary.js';
 
 function DashboardPage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { isStaff, logout } = useAuth();
   const scenario = searchParams.get('scenario') ?? '';
   const [reloadKey, reload] = useManualReload();
   const [loadState, setLoadState] = useState('idle');
@@ -52,13 +54,32 @@ function DashboardPage() {
     else reload();
   }
 
+  function handleAuthError(error, fallback) {
+    if (error instanceof ApiError && (error.status === 401 || error.status === 403)) {
+      logout();
+      setNotice('เซสชันหมดอายุหรือไม่มีสิทธิ์ กรุณาเข้าสู่ระบบด้วยบัญชีเจ้าหน้าที่อีกครั้ง');
+    } else {
+      setNotice(error instanceof Error ? error.message : fallback);
+    }
+  }
+
+  async function handleChangeStatus(requestId, status) {
+    try {
+      const updated = await updateRequestStatus(requestId, status);
+      setRequests((current) => current.map((item) => (item.id === requestId ? updated : item)));
+      setNotice(`เปลี่ยนสถานะคำร้อง ${requestId} เป็น ${status} แล้ว`);
+    } catch (error) {
+      handleAuthError(error, 'เปลี่ยนสถานะไม่สำเร็จ');
+    }
+  }
+
   async function handleDelete(requestId) {
     try {
       const nextRequests = await deleteRequest(requestId);
       setRequests(nextRequests);
       setNotice(`ลบคำร้อง ${requestId} แล้ว`);
     } catch (error) {
-      setNotice(error instanceof Error ? error.message : 'ลบคำร้องไม่สำเร็จ');
+      handleAuthError(error, 'ลบคำร้องไม่สำเร็จ');
     }
   }
 
@@ -93,7 +114,7 @@ function DashboardPage() {
           <SummaryPanel summary={summary} />
           <section className="panel" aria-labelledby="request-list-title">
             <div className="section-heading"><h2 id="request-list-title">รายการคำร้อง</h2><FilterBar value={statusFilter} onFilterChange={setStatusFilter} /></div>
-            <RequestList requests={filteredRequests} onDeleteRequest={handleDelete} />
+            <RequestList requests={filteredRequests} isStaff={isStaff} onDeleteRequest={handleDelete} onChangeStatus={handleChangeStatus} />
           </section>
         </>
       )}

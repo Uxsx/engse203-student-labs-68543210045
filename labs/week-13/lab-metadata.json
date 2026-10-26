@@ -1,0 +1,13 @@
+{
+  "week": "week-13",
+  "title": "Application Security & JWT Authentication",
+  "status": "submitted",
+  "originalRepoUrl": "https://github.com/Uxsx/engse203-student-labs-68543210045",
+  "originalCommit": "a14943c65dc67dce460b8e5b74a02062e11643bf",
+  "pullRequestUrl": "https://github.com/Uxsx/engse203-student-labs-68543210045/pull/37",
+  "resultUrl": "https://campus-service-n33g.onrender.com/",
+  "submissionTag": "lab-13-submission-v1",
+  "testStatus": "pass",
+  "notes": "Week 13: เพิ่ม validation และจำกัด request body, password hashing ด้วย scrypt, JWT login และ role-based authorization, production JWT secret validation, login rate limit และ security header; API 70 tests, frontend 3 tests, build ผ่าน และ checker ผ่าน 27/27",
+  "sourceUrl": "https://github.com/Uxsx/engse203-student-labs-68543210045/tree/unit5/week-13/labs/week-13/source"
+}
