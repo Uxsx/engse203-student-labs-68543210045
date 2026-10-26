@@ -1,4 +1,4 @@
-import { apiFetch, ApiError } from './apiClient.js';
+import { apiFetch, ApiError, hasAuthToken, setAuthToken } from './apiClient.js';
 
 /**
  * Week 07 — เปลี่ยนจากอ่าน localStorage เป็นเรียก API จริง
@@ -8,7 +8,20 @@ import { apiFetch, ApiError } from './apiClient.js';
  * นี่คือประโยชน์ของ Service Layer ที่เราสร้างไว้ตั้งแต่ Week 05
  */
 
-export { ApiError };
+export { ApiError, hasAuthToken };
+
+export async function loginStaff(email, password) {
+  const result = await apiFetch('/api/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ email, password }),
+  });
+  setAuthToken(result.token);
+  return result.user;
+}
+
+export function logoutStaff() {
+  setAuthToken(null);
+}
 
 export async function getRequests(options = {}) {
   // scenario ยังใช้ได้เหมือนเดิม เพื่อให้ทดสอบสถานะต่าง ๆ ได้โดยไม่ต้องแกล้ง API

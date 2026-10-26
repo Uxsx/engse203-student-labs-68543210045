@@ -11,6 +11,10 @@ export function setAuthToken(token) {
   else sessionStorage.removeItem(TOKEN_KEY);
 }
 
+export function hasAuthToken() {
+  return Boolean(sessionStorage.getItem(TOKEN_KEY));
+}
+
 /** error ที่รู้ว่ามาจาก API พร้อม status ที่ได้กลับมา */
 export class ApiError extends Error {
   constructor(message, status) {
